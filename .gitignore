@@ -1,0 +1,10 @@
+node_modules
+dist
+.vite
+.DS_Store
+src-tauri/target
+src-tauri/.cargo
+
+# Local settings dump from app debug feature
+/tmp/zotero-*.json
+zotero-debug-*.json

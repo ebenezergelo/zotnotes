@@ -23,7 +23,7 @@ export function PreviewPanel({ preview }: PreviewPanelProps) {
             <dt className="font-medium text-muted-foreground">Year</dt>
             <dd>{preview.year || '-'}</dd>
             <dt className="font-medium text-muted-foreground">Cite key</dt>
-            <dd className="font-mono text-xs">{preview.citeKey || '-'}</dd>
+            <dd className="text-xs">{preview.citeKey || '-'}</dd>
           </dl>
         )}
       </CardContent>

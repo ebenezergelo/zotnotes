@@ -15,6 +15,9 @@ if [[ ! -d "node_modules" ]]; then
   npm install
 fi
 
+echo "Syncing app icons from macos/ ..."
+npm run sync:icons
+
 echo "Building macOS DMG with Tauri..."
 npm run tauri build -- --bundles dmg
 

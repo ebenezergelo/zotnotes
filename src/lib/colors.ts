@@ -11,6 +11,19 @@ const HEX_TO_COLOR: Record<string, string> = {
 
 const FIXED_ORDER = ['Yellow', 'Green', 'Blue', 'Pink', 'Orange', 'Purple', 'Gray', 'Unknown'];
 
+export const COLOR_SWATCH_HEX: Record<string, string> = {
+  Yellow: '#ffd400',
+  Green: '#5fb236',
+  Blue: '#2ea8e5',
+  Pink: '#e56eee',
+  Orange: '#f19837',
+  Purple: '#a28ae5',
+  Gray: '#aaaaaa',
+  Unknown: '#7d7d7d',
+};
+
+export const ORDERED_COLOR_NAMES = [...FIXED_ORDER];
+
 export function colorNameFromHex(input: string): string {
   const normalized = input.trim().toLowerCase();
   if (!normalized) {

@@ -14,8 +14,8 @@ export function Dialog({ open, onClose, title, className, children }: PropsWithC
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true">
-      <div className={cn('w-full max-w-xl rounded-lg border border-border bg-card shadow-lg animate-fade-in', className)}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(16,16,16,0.82)] p-4" role="dialog" aria-modal="true">
+      <div className={cn('w-full max-w-xl rounded-lg border border-border bg-card animate-fade-in', className)}>
         <div className="flex items-center justify-between border-b border-border p-4">
           <h2 className="text-base font-semibold">{title}</h2>
           <button

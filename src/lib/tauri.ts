@@ -1,5 +1,16 @@
 import { invoke } from '@tauri-apps/api/core';
-import type { AppSettings } from './types';
+import type { AppSettings, ItemSummary, ZoteroItemData } from './types';
+
+export interface SqliteAnnotationPayload {
+  key: string;
+  attachmentKey: string;
+  colorHex: string;
+  text: string;
+  comment: string;
+  pageLabel: string;
+  sortIndex: number;
+  isImageSelection: boolean;
+}
 
 const LOCAL_STORAGE_KEY = 'zotnotes-settings';
 
@@ -13,6 +24,10 @@ function defaultSettings(): AppSettings {
     attachmentBaseDir: '',
     zoteroApiKey: '',
     zoteroBaseUrl: 'http://127.0.0.1:23119',
+    templateSettings: {
+      propertyOrder: ['title', 'author', 'year', 'company'],
+      colorHeadingOverrides: {},
+    },
   };
 }
 
@@ -53,9 +68,18 @@ export async function loadSettings(): Promise<AppSettings> {
 
     try {
       const parsed = JSON.parse(raw) as AppSettings;
+      const defaults = defaultSettings();
       return {
-        ...defaultSettings(),
+        ...defaults,
         ...parsed,
+        templateSettings: {
+          ...defaults.templateSettings,
+          ...(parsed.templateSettings ?? {}),
+          colorHeadingOverrides: {
+            ...defaults.templateSettings.colorHeadingOverrides,
+            ...(parsed.templateSettings?.colorHeadingOverrides ?? {}),
+          },
+        },
       };
     } catch {
       return defaultSettings();
@@ -102,4 +126,45 @@ export async function zoteroProxyGetBytes(url: string, zoteroApiKey: string): Pr
   });
 
   return new Uint8Array(values);
+}
+
+export async function zoteroSqliteSearchItems(query: string): Promise<ItemSummary[]> {
+  if (!isTauriRuntime()) {
+    throw new Error('SQLite access is only available in Tauri runtime.');
+  }
+
+  return invoke<ItemSummary[]>('zotero_sqlite_search_items', { query });
+}
+
+export async function zoteroSqliteGetItem(itemKey: string): Promise<ZoteroItemData> {
+  if (!isTauriRuntime()) {
+    throw new Error('SQLite access is only available in Tauri runtime.');
+  }
+
+  return invoke<ZoteroItemData>('zotero_sqlite_get_item', { itemKey });
+}
+
+export async function zoteroSqliteGetAnnotations(itemKey: string): Promise<SqliteAnnotationPayload[]> {
+  if (!isTauriRuntime()) {
+    throw new Error('SQLite access is only available in Tauri runtime.');
+  }
+
+  return invoke<SqliteAnnotationPayload[]>('zotero_sqlite_get_annotations', { itemKey });
+}
+
+export async function zoteroSqliteGetCachedAnnotationImage(annotationKey: string): Promise<Uint8Array> {
+  if (!isTauriRuntime()) {
+    throw new Error('SQLite access is only available in Tauri runtime.');
+  }
+
+  const values = await invoke<number[]>('zotero_sqlite_get_cached_annotation_image', { annotationKey });
+  return new Uint8Array(values);
+}
+
+export async function zoteroSqliteGetCitationKey(itemKey: string): Promise<string | null> {
+  if (!isTauriRuntime()) {
+    throw new Error('SQLite access is only available in Tauri runtime.');
+  }
+
+  return invoke<string | null>('zotero_sqlite_get_citation_key', { itemKey });
 }

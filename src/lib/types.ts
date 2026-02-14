@@ -1,8 +1,16 @@
+export type TemplatePropertyKey = 'title' | 'author' | 'year' | 'company';
+
+export interface TemplateSettings {
+  propertyOrder: TemplatePropertyKey[];
+  colorHeadingOverrides: Record<string, string>;
+}
+
 export interface AppSettings {
   markdownDir: string;
   attachmentBaseDir: string;
   zoteroApiKey: string;
   zoteroBaseUrl: string;
+  templateSettings: TemplateSettings;
 }
 
 export interface ZoteroItemData {
@@ -60,6 +68,7 @@ export interface ExportInput {
   abstractText: string;
   citeKey: string;
   groupedAnnotations: ColorGroup[];
+  templateSettings?: TemplateSettings;
 }
 
 export interface ColorGroup {

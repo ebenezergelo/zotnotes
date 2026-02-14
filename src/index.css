@@ -1,19 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: 212 50% 7%;
-  --foreground: 210 40% 96%;
-  --card: 213 34% 11%;
-  --card-foreground: 210 35% 96%;
-  --primary: 191 100% 46%;
-  --primary-foreground: 209 100% 7%;
-  --muted: 215 24% 16%;
-  --muted-foreground: 214 16% 72%;
-  --border: 215 25% 24%;
-  --input: 215 25% 24%;
-  --destructive: 0 70% 48%;
+  --color-bg-tertiary: #202020;
+  --color-text-primary: #ffffff;
+  --color-border-secondary: #202020;
+  --color-editor-body: #ffffff;
+  --color-bg-hover: #202020;
+  --color-bg-doc-link: rgba(254, 68, 68, 0.15);
+  --color-bg-tooltip: #161616;
+  --color-text-secondary: #c6bdbd;
+  --color-text-placeholder: #d7c3b3;
+  --color-border-accent: #e76767;
+  --color-bg-mark: #9b6236;
+  --color-text-tertiary: #a0a0a0;
+  --color-bg-accent: #e76767;
+  --color-bg-intermediate: #101010;
+  --color-text-link: #ffcfa8;
+  --color-bg-kbd: #2e2929;
+  --color-icon: #b1adad;
+  --color-bg-error: #b91c1c;
+  --color-outline-primary: rgba(254, 68, 68, 0.505);
+  --color-text-error: #e23a34;
+  --color-text-accent: #ff8080;
+  --color-bg-secondary: #101010;
+  --color-border-error: #e94a4a;
+  --color-editor-heading: #ffffff;
+  --color-border-primary: #202020;
+  --color-bg-primary: #101010;
+  --color-app-sidebar: #101010;
+
+  --background: 0 0% 6%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 6%;
+  --card-foreground: 0 0% 100%;
+  --primary: 0 73% 65%;
+  --primary-foreground: 0 0% 100%;
+  --muted: 0 0% 9%;
+  --muted-foreground: 0 7% 76%;
+  --border: 0 0% 13%;
+  --input: 0 0% 6%;
+  --destructive: 0 74% 42%;
 }
 
 * {
@@ -25,10 +55,25 @@ body {
   min-height: 100vh;
   background: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: "IBM Plex Sans", "Avenir Next", "Segoe UI", sans-serif;
+  font-family: "Karla", "Avenir Next", "Segoe UI", sans-serif;
 }
 
 button,
-input {
+input,
+textarea,
+select {
   font: inherit;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-placeholder);
+  opacity: 1;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: inherit;
 }

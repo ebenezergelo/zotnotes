@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "sync:icons": "./scripts/sync_icons_from_macos.sh",
     "preview": "vite preview",
     "tauri": "tauri",
     "build:dmg": "./scripts/build_dmg.sh",

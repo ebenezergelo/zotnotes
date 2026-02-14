@@ -1,0 +1,66 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="96" y1="64" x2="928" y2="960" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#121826"/>
+      <stop offset="0.48" stop-color="#1F3560"/>
+      <stop offset="1" stop-color="#1180C8"/>
+    </linearGradient>
+    <radialGradient id="topGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(320 220) rotate(30) scale(500 300)">
+      <stop stop-color="#B7E8FF" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#B7E8FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orbCyan" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(760 250) rotate(120) scale(270 210)">
+      <stop stop-color="#72E6FF" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#72E6FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orbBlue" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(280 760) rotate(22) scale(320 260)">
+      <stop stop-color="#76A5FF" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#76A5FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="glassCard" x1="240" y1="184" x2="776" y2="856" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="white" stop-opacity="0.28"/>
+      <stop offset="0.4" stop-color="white" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="white" stop-opacity="0.09"/>
+    </linearGradient>
+    <linearGradient id="glassEdge" x1="210" y1="188" x2="806" y2="828" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0.64"/>
+      <stop offset="1" stop-color="white" stop-opacity="0.18"/>
+    </linearGradient>
+    <filter id="blur56" x="-200" y="-200" width="1424" height="1424" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="56"/>
+    </filter>
+    <filter id="shadow" x="144" y="128" width="736" height="800" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feOffset dy="18"/>
+      <feGaussianBlur stdDeviation="18"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.02 0 0 0 0 0.09 0 0 0 0 0.18 0 0 0 0.35 0"/>
+      <feBlend in="SourceGraphic" mode="normal"/>
+    </filter>
+    <clipPath id="appMask">
+      <rect x="64" y="64" width="896" height="896" rx="216"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#appMask)">
+    <rect x="64" y="64" width="896" height="896" rx="216" fill="url(#bgGrad)"/>
+    <rect x="64" y="64" width="896" height="896" rx="216" fill="url(#topGlow)"/>
+
+    <g filter="url(#blur56)">
+      <ellipse cx="770" cy="250" rx="225" ry="170" fill="url(#orbCyan)"/>
+      <ellipse cx="276" cy="760" rx="280" ry="210" fill="url(#orbBlue)"/>
+      <ellipse cx="580" cy="640" rx="210" ry="150" fill="#93F1FF" fill-opacity="0.35"/>
+    </g>
+
+    <g filter="url(#shadow)">
+      <rect x="196" y="174" width="632" height="676" rx="176" fill="url(#glassCard)"/>
+      <rect x="196.75" y="174.75" width="630.5" height="674.5" rx="175.25" stroke="url(#glassEdge)" stroke-width="1.5"/>
+
+      <path d="M246 250C322 204 434 182 534 190C634 198 728 238 780 302" stroke="white" stroke-opacity="0.26" stroke-width="16" stroke-linecap="round"/>
+      <path d="M238 314C368 250 612 246 790 374" stroke="white" stroke-opacity="0.16" stroke-width="10" stroke-linecap="round"/>
+
+      <path d="M322 350H710L356 676H710" stroke="white" stroke-opacity="0.96" stroke-width="84" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="705" cy="674" r="44" fill="white" fill-opacity="0.96"/>
+    </g>
+
+    <rect x="64" y="64" width="896" height="896" rx="216" stroke="white" stroke-opacity="0.22" stroke-width="2"/>
+  </g>
+</svg>

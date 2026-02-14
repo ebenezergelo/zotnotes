@@ -5,7 +5,7 @@
   "identifier": "com.zotnotes.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "npm run sync:icons && npm run build",
     "devUrl": "http://localhost:1420",
     "frontendDist": "../dist"
   },
@@ -16,7 +16,9 @@
         "title": "ZotNotes",
         "width": 1240,
         "height": 820,
-        "resizable": true
+        "resizable": true,
+        "titleBarStyle": "Transparent",
+        "hiddenTitle": true
       }
     ],
     "security": {
@@ -27,6 +29,7 @@
   "bundle": {
     "active": true,
     "targets": ["dmg"],
+    "icon": ["icons/icon.icns"],
     "macOS": {
       "minimumSystemVersion": "12.0"
     }

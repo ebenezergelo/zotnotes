@@ -5,10 +5,11 @@ import type {
   AnnotationModel,
   ColorGroup,
   RenderAnnotation,
+  TemplateSettings,
   ZoteroCreator,
   ZoteroItemData,
 } from './types';
-import { extractYear, normalizePath, toRelativePath } from './utils';
+import { extractYear, normalizePath } from './utils';
 
 function creatorToString(creator: ZoteroCreator): string {
   if (creator.lastName || creator.firstName) {
@@ -78,7 +79,7 @@ function groupAnnotations(annotations: Array<RenderAnnotation & { __colorName: s
 }
 
 export function prepareExport(input: ExportPreparationInput): PreparedExport {
-  const citeDir = normalizePath(`${input.attachmentBaseDir}/attachment/${input.citeKey}`);
+  const imageDir = normalizePath(input.attachmentBaseDir);
   const markdownPath = normalizePath(`${input.markdownDir}/@${input.citeKey}.md`);
 
   let imageCounter = 0;
@@ -97,9 +98,9 @@ export function prepareExport(input: ExportPreparationInput): PreparedExport {
 
       if (annotation.isImageSelection) {
         imageCounter += 1;
-        const fileName = `image_${imageCounter}.png`;
-        const absolutePath = normalizePath(`${citeDir}/${fileName}`);
-        const relativePathFromMarkdown = toRelativePath(markdownPath, absolutePath);
+        const fileName = `@${input.citeKey}_${imageCounter}.png`;
+        const absolutePath = normalizePath(`${imageDir}/${fileName}`);
+        const relativePathFromMarkdown = fileName;
 
         imagePlans.push({
           annotationKey: annotation.key,
@@ -127,7 +128,7 @@ export function prepareExport(input: ExportPreparationInput): PreparedExport {
   };
 }
 
-export function renderPreparedExport(prepared: PreparedExport): string {
+export function renderPreparedExport(prepared: PreparedExport, templateSettings?: TemplateSettings): string {
   return generateMarkdown({
     title: prepared.title,
     author: prepared.author,
@@ -136,6 +137,7 @@ export function renderPreparedExport(prepared: PreparedExport): string {
     abstractText: prepared.abstractText,
     citeKey: '',
     groupedAnnotations: prepared.groupedAnnotations,
+    templateSettings,
   });
 }
 

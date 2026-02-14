@@ -4,6 +4,25 @@ Minimal desktop app to export Zotero PDF annotations into structured Markdown gr
 
 This is a native desktop app (Tauri) for macOS/Windows/Linux, not a standalone web deployment.
 
+## Screenshots
+
+![ZotNotes main interface](screenshots/4.png)
+*Main interface showing library item search and export functionality*
+
+<details>
+<summary>Additional UI screenshots</summary>
+
+![Settings dialog](screenshots/2.png)
+*Settings dialog with output directories and Zotero API configuration*
+
+![Template customization](screenshots/1.png)
+*Color section header customization for annotation grouping*
+
+</details>
+
+![Exported note in Octarine](screenshots/3.png)
+*Example of exported annotations viewed in Octarine (PKM software), showing color-grouped annotations*
+
 ## Stack
 
 - Tauri v2 (Rust backend commands + local settings persistence)
@@ -24,10 +43,12 @@ This is a native desktop app (Tauri) for macOS/Windows/Linux, not a standalone w
 - Export button (disabled until settings + item selection are valid)
 - Dry run mode prints markdown + planned image paths without writing files
 - Debug button (`Debug: Dump JSON`) writes selected item + children + attachment annotation payloads to temp JSON for field inspection
+- Local Zotero desktop SQLite fallback for item search, item metadata, and annotation extraction
+- Zotero deep links on page labels (`[p. X]`) pointing to annotation items
 
 ## Rust commands
 
-Implemented under `/Users/ebenezergelo/Developer/building/zotnotes/src-tauri/src/lib.rs`:
+Implemented in `src-tauri/src/lib.rs`:
 
 - `select_directory_dialog()`
 - `save_markdown_file(path, content)`
@@ -64,6 +85,12 @@ Then:
 
 ## Zotero API and Better BibTeX mapping
 
+The app now uses a hybrid strategy:
+
+- Preferred annotation source: local Zotero desktop database (`~/Zotero/zotero.sqlite`, opened read-only with `immutable=1`)
+- HTTP API fallback: local Zotero API (`http://127.0.0.1:23119`) when SQLite is unavailable
+- Search/item metadata can also fall back to SQLite when API requests fail
+
 ### Endpoint mapping currently implemented
 
 The app currently uses these local API paths:
@@ -76,9 +103,24 @@ The app currently uses these local API paths:
   - `/api/users/0/items/{annotationKey}/file`
   - `/api/users/0/items/{annotationKey}/file/view`
 
+### Desktop SQLite fallback
+
+- Default DB path candidates:
+  - `~/Zotero/zotero.sqlite`
+  - `~/Zotero Beta/zotero.sqlite`
+- Override path:
+  - `ZOTERO_SQLITE_PATH=/absolute/path/to/zotero.sqlite`
+
+SQLite mode is read-only and avoids lock contention by opening with `immutable=1`.
+
+Selected-area image fallback:
+
+- If HTTP image endpoints fail, the app reads Zotero's local annotation cache image at:
+  - `~/Zotero/cache/library/{annotationKey}.png`
+
 ### Cite key resolution (Better BibTeX)
 
-Resolution order in `/Users/ebenezergelo/Developer/building/zotnotes/src/lib/citekey.ts`:
+Resolution order in `src/lib/citekey.ts`:
 
 1. Direct item fields (`citationKey`, `citekey`, `bibtexKey`, `meta.citationKey`)
 2. Parse from `extra` lines like `Citation Key: mykey`
@@ -135,9 +177,30 @@ npm run tauri dev
 npm run build:dmg
 ```
 
-This runs `/Users/ebenezergelo/Developer/building/zotnotes/scripts/build_dmg.sh`, which builds with Tauri and outputs the installer under:
+This runs `scripts/build_dmg.sh`, which builds with Tauri and outputs the installer to `src-tauri/target/release/bundle/dmg`.
 
-- `/Users/ebenezergelo/Developer/building/zotnotes/src-tauri/target/release/bundle/dmg`
+## Publishing Releases
+
+The repository is configured with GitHub Actions to automatically build and publish releases:
+
+1. **Update version** in `package.json` and `src-tauri/tauri.conf.json`
+2. **Commit changes:**
+   ```bash
+   git add package.json src-tauri/tauri.conf.json
+   git commit -m "chore: bump version to 0.2.0"
+   ```
+3. **Create and push a version tag:**
+   ```bash
+   git tag v0.2.0
+   git push origin main --tags
+   ```
+4. GitHub Actions will automatically:
+   - Build the macOS DMG
+   - Create a GitHub Release
+   - Attach the DMG as a downloadable asset
+   - Generate release notes from commits
+
+Users can then download the DMG from the [Releases page](https://github.com/ebenezergelo/zotnotes/releases).
 
 ### Tests
 
@@ -145,12 +208,12 @@ This runs `/Users/ebenezergelo/Developer/building/zotnotes/scripts/build_dmg.sh`
 npm test
 ```
 
-Includes unit test for markdown generation at `/Users/ebenezergelo/Developer/building/zotnotes/src/__tests__/markdown.test.ts`.
-Vitest config lives at `/Users/ebenezergelo/Developer/building/zotnotes/vitest.config.ts`.
+Includes unit test for markdown generation at `src/__tests__/markdown.test.ts`.
+Vitest config: `vitest.config.ts`.
 
 ## How to install shadcn/ui in this project
 
-This repository uses shadcn/ui-style component primitives directly in source (`/Users/ebenezergelo/Developer/building/zotnotes/src/components/ui`).
+This repository uses shadcn/ui-style component primitives directly in source (`src/components/ui`).
 If you want canonical shadcn CLI-managed components:
 
 1. `npx shadcn@latest init`
